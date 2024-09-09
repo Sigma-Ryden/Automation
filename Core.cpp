@@ -1,6 +1,6 @@
 #include <iostream> // cout
 
-#include <Core.hpp>
+#include <Automation/Core.hpp>
 
 namespace automation
 {
