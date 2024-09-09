@@ -1,5 +1,5 @@
-#ifndef TESTING_CORE_HPP
-#define TESTING_CORE_HPP
+#ifndef AUTOMATION_CORE_HPP
+#define AUTOMATION_CORE_HPP
 
 #include <cassert> // assert
 
@@ -120,7 +120,7 @@ registry_t& global();
 
 } // namespace automation
 
-#define AUTOMATION_EXPR_OPERATOR_GENERIC(op, lhs_brace, rhs_brace)                                      \
+#define AUTOMATION_EXPRESSION_OPERATOR_GENERIC(op, lhs_brace, rhs_brace)                                \
     template <typename L, typename R>                                                                   \
     automation::expression_t<bool> operator op(automation::expression_t<L> const& lhs_expression,       \
                                                automation::expression_t<R> const& rhs_expression) {     \
@@ -140,15 +140,15 @@ registry_t& global();
        return ::operator op(automation::expression(lhs_value), rhs_expression);                         \
     }
 
-AUTOMATION_EXPR_OPERATOR_GENERIC(==,"","")
-AUTOMATION_EXPR_OPERATOR_GENERIC(!=,"","")
-AUTOMATION_EXPR_OPERATOR_GENERIC(<,"","")
-AUTOMATION_EXPR_OPERATOR_GENERIC(<=,"","")
-AUTOMATION_EXPR_OPERATOR_GENERIC(>,"","")
-AUTOMATION_EXPR_OPERATOR_GENERIC(>=,"","")
-AUTOMATION_EXPR_OPERATOR_GENERIC(&&,"(",")")
-AUTOMATION_EXPR_OPERATOR_GENERIC(||,"(",")")
+AUTOMATION_EXPRESSION_OPERATOR_GENERIC(==,"","")
+AUTOMATION_EXPRESSION_OPERATOR_GENERIC(!=,"","")
+AUTOMATION_EXPRESSION_OPERATOR_GENERIC(<,"","")
+AUTOMATION_EXPRESSION_OPERATOR_GENERIC(<=,"","")
+AUTOMATION_EXPRESSION_OPERATOR_GENERIC(>,"","")
+AUTOMATION_EXPRESSION_OPERATOR_GENERIC(>=,"","")
+AUTOMATION_EXPRESSION_OPERATOR_GENERIC(&&,"(",")")
+AUTOMATION_EXPRESSION_OPERATOR_GENERIC(||,"(",")")
 
-#undef AUTOMATION_EXPR_OPERATOR_GENERIC
+#undef AUTOMATION_EXPRESSION_OPERATOR_GENERIC
 
-#endif // TESTING_CORE_HPP
+#endif // AUTOMATION_CORE_HPP
