@@ -1,6 +1,6 @@
 #include <iostream> // cout
 
-#include <AutoTesting/Core.hpp>
+#include <Core.hpp>
 
 namespace automation
 {
