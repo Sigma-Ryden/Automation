@@ -21,15 +21,15 @@ test_t::test_t(const std::string& module, const std::string& name)
     global().add(this);
 }
 
-static std::string info_format(test_t* test, std::string const& msg, std::string const& string_value, bool condition)
+static std::string info_format(test_t* test, std::string const& msg, std::string const& string_value, bool ok)
 {
-    return (condition ? "[   OK   ] " : "[ FAILED ] ")
+    return (ok ? "[   OK   ] " : "[ FAILED ] ")
          + std::string(test->module)
          + "::"
          + test->name
          + '.'
          + msg
-         + (condition && string_value.size() > 0 ? "\n" : " [  WITH  ] " + string_value + "\n");
+         + (ok ? "\n" : " [  WITH  ] " + string_value + "\n");
 }
 
 static void update_stat(unsigned& passed, unsigned& failed, bool ok)
