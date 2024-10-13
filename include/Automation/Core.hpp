@@ -23,19 +23,19 @@
     void test_module::test_name::run()
 
 // Calculate completed and failed test, provide debug info
-#define EXPECT(msg, ...) automation::global().check(__VA_ARGS__, this, msg)
+#define EXPECT(msg, ...) automation::global.check(__VA_ARGS__, this, msg)
 #define ASSERT(msg, ...) if(!EXPECT(msg, __VA_ARGS__)) return
 
 // Tests Execution
-#define EXECUTE_TEST(name, ...) automation::global().execute_test(name)
-#define EXECUTE_MODULE(name, ...) automation::global().execute_module(name)
-#define EXECUTE_ALL(...) automation::global().execute_all()
+#define EXECUTE_TEST(name, ...) automation::global.execute_test(name)
+#define EXECUTE_MODULE(name, ...) automation::global.execute_module(name)
+#define EXECUTE_ALL(...) automation::global.execute_all()
 
 // Show stat info
-#define TESTING_STAT(...) automation::global().stat()
+#define TESTING_STAT(...) automation::global.stat()
 
 // Will catch exception and show by text printer
-#define TRY_CATCH(...) automation::global().try_catch([]{ (void)(__VA_ARGS__); })
+#define TRY_CATCH(...) automation::global.try_catch([]{ (void)(__VA_ARGS__); })
 
 // Will allow to show expression by text printer
 #define EXPR(...) automation::expression(__VA_ARGS__)
@@ -116,7 +116,7 @@ public:
     void try_catch(std::function<void()>&& call) const noexcept;
 };
 
-registry_t& global();
+extern registry_t global;
 
 } // namespace automation
 

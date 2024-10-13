@@ -18,7 +18,7 @@ expression_t<bool> expression(bool const& expression_value)
 test_t::test_t(const std::string& module, const std::string& name)
     : module(module), name(name)
 {
-    global().add(this);
+    global.add(this);
 }
 
 static std::string info_format(test_t* test, std::string const& msg, std::string const& string_value, bool ok)
@@ -111,9 +111,6 @@ void registry_t::try_catch(std::function<void()>&& call) const noexcept
     catch(...) { std::cout << "Unexpected error."; }
 }
 
-registry_t& global()
-{
-    static registry_t registry; return registry;
-}
+registry_t global;
 
 } // namespace automation
