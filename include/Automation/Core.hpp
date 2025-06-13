@@ -3,6 +3,7 @@
 
 #include <cassert> // assert
 
+#include <utility> // forward
 #include <functional> // function
 #include <map> // map
 #include <string> // string
@@ -37,6 +38,8 @@
 // Will catch exception and show by text printer
 #define TRY_CATCH(...) automation::global.try_catch([]{ (void)(__VA_ARGS__); })
 
+#define STAT_HANDLER(...) automation::global.stat_handler = __VA_ARGS__
+
 // Will allow to show expression by text printer
 #define EXPR(...) automation::expression(__VA_ARGS__)
 
@@ -46,28 +49,37 @@ namespace automation
 template <typename T>
 struct expression_t
 {
-    T const& value;
+    T value;
     std::string string_value;
 
     expression_t<bool> operator!();
 };
 
 template <typename T>
-expression_t<T> expression(T const& expression_value, std::string const& expression_string_value)
+struct expression_t<T&>
 {
-    return expression_t<T>{expression_value, expression_string_value};
+    T& value;
+    std::string string_value;
+
+    expression_t<bool> operator!();
+};
+
+template <typename T>
+expression_t<T> expression(T&& expression_value, std::string const& expression_string_value)
+{
+    return expression_t<T>{std::forward<T>(expression_value), expression_string_value};
 }
 
 template <typename T>
-expression_t<T> expression(T const& expression_value)
+expression_t<T> expression(T&& expression_value)
 {
     std::string expression_string_value;
     std::stringstream stream; stream << expression_value; stream >> expression_string_value;
-    return expression(expression_value, expression_string_value);
+    return expression(std::forward<T>(expression_value), expression_string_value);
 }
 
-expression_t<std::nullptr_t> expression(std::nullptr_t const& expression_value);
-expression_t<bool> expression(bool const& expression_value);
+expression_t<std::nullptr_t> expression(std::nullptr_t expression_value);
+expression_t<bool> expression(bool expression_value);
 
 template <typename T>
 expression_t<bool> expression_t<T>::operator!()
@@ -92,6 +104,7 @@ class registry_t
 {
 public:
     std::map<std::string, std::map<std::string, test_t*>> all;
+    std::function<void(std::string const&)> stat_handler = &default_stat_handler;
 
 public:
     unsigned passed = 0;
@@ -111,6 +124,7 @@ public:
 
 public:
     void stat();
+    static void default_stat_handler(std::string const& text);
 
 public:
     void try_catch(std::function<void()>&& call) const noexcept;

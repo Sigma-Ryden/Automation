@@ -1,18 +1,18 @@
-#include <iostream> // cout
+#include <cstdio> // printf
 
 #include <Automation/Core.hpp>
 
 namespace automation
 {
 
-expression_t<std::nullptr_t> expression(std::nullptr_t const& expression_value)
+expression_t<std::nullptr_t> expression(std::nullptr_t expression_value)
 {
-    return expression(expression_value, "nullptr");
+    return expression_t<std::nullptr_t>{expression_value, "nullptr"};
 }
 
-expression_t<bool> expression(bool const& expression_value)
+expression_t<bool> expression(bool expression_value)
 {
-    return expression(expression_value, expression_value == true ? "true" : "false");
+    return expression_t<bool>{expression_value, expression_value == true ? "true" : "false"};
 }
 
 test_t::test_t(const std::string& module, const std::string& name)
@@ -52,7 +52,7 @@ bool registry_t::check(expression_t<bool> const& expression, test_t* test, const
 {
     auto const condition = static_cast<bool>(expression.value);
     update_stat(passed, failed, condition);
-    std::cout << info_format(test, msg, expression.string_value, condition);
+    stat_handler(info_format(test, msg, expression.string_value, condition));
     return condition;
 }
 
@@ -100,15 +100,20 @@ static std::string stat_format(unsigned passed, unsigned failed)
 
 void registry_t::stat()
 {
-    std::cout << stat_format(passed, failed);
+    stat_handler(stat_format(passed, failed));
 }
 
 void registry_t::try_catch(std::function<void()>&& call) const noexcept
 {
     try { call(); }
-    catch(const char* e) { std::cout << e; }
-    catch(std::exception& e) { std::cout << e.what(); }
-    catch(...) { std::cout << "Unexpected error."; }
+    catch(const char* e) { stat_handler(e); }
+    catch(std::exception& e) { stat_handler(e.what()); }
+    catch(...) { stat_handler("Unexpected error."); }
+}
+
+void registry_t::default_stat_handler(std::string const& stat)
+{
+    printf("%s", stat.c_str());
 }
 
 registry_t global;
