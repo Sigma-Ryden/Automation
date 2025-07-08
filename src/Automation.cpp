@@ -1,6 +1,6 @@
 #include <cstdio> // printf
 
-#include <Automation/Core.hpp>
+#include <Automation.hpp>
 
 namespace automation
 {
@@ -15,10 +15,10 @@ expression_t<bool> expression(bool expression_value)
     return expression_t<bool>{expression_value, expression_value == true ? "true" : "false"};
 }
 
-test_t::test_t(const std::string& module, const std::string& name)
+test_t::test_t(const std::string& module, const std::string& name, registry_t* registry)
     : module(module), name(name)
 {
-    global.add(this);
+    registry->add(this);
 }
 
 static std::string info_format(test_t* test, std::string const& msg, std::string const& string_value, bool ok)
