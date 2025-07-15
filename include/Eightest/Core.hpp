@@ -16,9 +16,9 @@
 #endif
 
 // Allow to hide owner classes within different translation units
-#define EIGHTEST_SPACE(...) namespace __VA_ARGS__
+#define TEST_SPACE(...) namespace __VA_ARGS__
 
-#define EIGHTEST(test_module, test_name) \
+#define TEST(test_module, test_name) \
     TEST_SPACE(test_module) { \
         static struct test_name : eightest::test_t { \
             test_name() : eightest::test_t(#test_module, #test_name, EIGHTEST_REGISTRY) {} \
@@ -28,24 +28,24 @@
     void test_module::test_name::run()
 
 // Calculate completed and failed test, provide debug info
-#define EIGHTEST_EXPECT(msg, ...) EIGHTEST_REGISTRY->check(__VA_ARGS__, this, msg)
-#define EIGHTEST_ASSERT(msg, ...) if(!EXPECT(msg, __VA_ARGS__)) return
+#define EXPECT(msg, ...) EIGHTEST_REGISTRY->check(__VA_ARGS__, this, msg)
+#define ASSERT(msg, ...) if(!EXPECT(msg, __VA_ARGS__)) return
 
 // Tests Execution
-#define EIGHTEST_EXECUTE_TEST(name, ...) EIGHTEST_REGISTRY->execute_test(name)
-#define EIGHTEST_EXECUTE_MODULE(name, ...) EIGHTEST_REGISTRY->execute_module(name)
-#define EIGHTEST_EXECUTE_ALL(...) EIGHTEST_REGISTRY->execute_all()
+#define EXECUTE_TEST(name, ...) EIGHTEST_REGISTRY->execute_test(name)
+#define EXECUTE_MODULE(name, ...) EIGHTEST_REGISTRY->execute_module(name)
+#define EXECUTE_ALL(...) EIGHTEST_REGISTRY->execute_all()
 
 // Show stat info
-#define EIGHTEST_TESTING_STAT(...) EIGHTEST_REGISTRY->stat()
+#define TESTING_STAT(...) EIGHTEST_REGISTRY->stat()
 
 // Will catch exception and show by text printer
-#define EIGHTEST_TRY_CATCH(...) EIGHTEST_REGISTRY->try_catch([]{ (void)(__VA_ARGS__); })
+#define TRY_CATCH(...) EIGHTEST_REGISTRY->try_catch([]{ (void)(__VA_ARGS__); })
 
-#define EIGHTEST_STAT_HANDLER(...) EIGHTEST_REGISTRY->stat_handler = __VA_ARGS__
+#define STAT_HANDLER(...) EIGHTEST_REGISTRY->stat_handler = __VA_ARGS__
 
 // Will allow to show expression by text printer
-#define EIGHTEST_EXPR(...) eightest::expression(__VA_ARGS__)
+#define EXPR(...) eightest::expression(__VA_ARGS__)
 
 
 namespace eightest
