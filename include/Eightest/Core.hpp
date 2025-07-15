@@ -1,5 +1,5 @@
-#ifndef AUTOMATION_CORE_HPP
-#define AUTOMATION_CORE_HPP
+#ifndef EIGHTEST_CORE_HPP
+#define EIGHTEST_CORE_HPP
 
 #include <utility> // forward
 #include <functional> // function
@@ -10,45 +10,45 @@
 
 // Test definition
 
-// will redirect automation registry
-#ifndef AUTOMATION_REGISTRY
-    #define AUTOMATION_REGISTRY (&automation::global)
+// will redirect eightest registry
+#ifndef EIGHTEST_REGISTRY
+    #define EIGHTEST_REGISTRY (&eightest::global)
 #endif
 
 // Allow to hide owner classes within different translation units
-#define TEST_SPACE(...) namespace __VA_ARGS__
+#define EIGHTEST_SPACE(...) namespace __VA_ARGS__
 
-#define TEST(test_module, test_name) \
+#define EIGHTEST(test_module, test_name) \
     TEST_SPACE(test_module) { \
-        static struct test_name : automation::test_t { \
-            test_name() : automation::test_t(#test_module, #test_name, AUTOMATION_REGISTRY) {} \
+        static struct test_name : eightest::test_t { \
+            test_name() : eightest::test_t(#test_module, #test_name, EIGHTEST_REGISTRY) {} \
             void run() override; \
         } s##test_name; \
     } \
     void test_module::test_name::run()
 
 // Calculate completed and failed test, provide debug info
-#define EXPECT(msg, ...) AUTOMATION_REGISTRY->check(__VA_ARGS__, this, msg)
-#define ASSERT(msg, ...) if(!EXPECT(msg, __VA_ARGS__)) return
+#define EIGHTEST_EXPECT(msg, ...) EIGHTEST_REGISTRY->check(__VA_ARGS__, this, msg)
+#define EIGHTEST_ASSERT(msg, ...) if(!EXPECT(msg, __VA_ARGS__)) return
 
 // Tests Execution
-#define EXECUTE_TEST(name, ...) AUTOMATION_REGISTRY->execute_test(name)
-#define EXECUTE_MODULE(name, ...) AUTOMATION_REGISTRY->execute_module(name)
-#define EXECUTE_ALL(...) AUTOMATION_REGISTRY->execute_all()
+#define EIGHTEST_EXECUTE_TEST(name, ...) EIGHTEST_REGISTRY->execute_test(name)
+#define EIGHTEST_EXECUTE_MODULE(name, ...) EIGHTEST_REGISTRY->execute_module(name)
+#define EIGHTEST_EXECUTE_ALL(...) EIGHTEST_REGISTRY->execute_all()
 
 // Show stat info
-#define TESTING_STAT(...) AUTOMATION_REGISTRY->stat()
+#define EIGHTEST_TESTING_STAT(...) EIGHTEST_REGISTRY->stat()
 
 // Will catch exception and show by text printer
-#define TRY_CATCH(...) AUTOMATION_REGISTRY->try_catch([]{ (void)(__VA_ARGS__); })
+#define EIGHTEST_TRY_CATCH(...) EIGHTEST_REGISTRY->try_catch([]{ (void)(__VA_ARGS__); })
 
-#define STAT_HANDLER(...) AUTOMATION_REGISTRY->stat_handler = __VA_ARGS__
+#define EIGHTEST_STAT_HANDLER(...) EIGHTEST_REGISTRY->stat_handler = __VA_ARGS__
 
 // Will allow to show expression by text printer
-#define EXPR(...) automation::expression(__VA_ARGS__)
+#define EIGHTEST_EXPR(...) eightest::expression(__VA_ARGS__)
 
 
-namespace automation
+namespace eightest
 {
 
 template <typename T>
@@ -139,37 +139,37 @@ public:
 
 extern registry_t global;
 
-} // namespace automation
+} // namespace eightest
 
-#define AUTOMATION_EXPRESSION_OPERATOR_GENERIC(op, lhs_brace, rhs_brace) \
+#define EIGHTEST_EXPRESSION_OPERATOR_GENERIC(op, lhs_brace, rhs_brace) \
     template <typename L, typename R> \
-    automation::expression_t<bool> operator op(automation::expression_t<L> const& lhs_expression, \
-                                               automation::expression_t<R> const& rhs_expression) { \
-        return automation::expression( \
+    eightest::expression_t<bool> operator op(eightest::expression_t<L> const& lhs_expression, \
+                                               eightest::expression_t<R> const& rhs_expression) { \
+        return eightest::expression( \
             lhs_expression.value op rhs_expression.value, \
             lhs_brace+lhs_expression.string_value+" "#op" "+rhs_expression.string_value+rhs_brace \
         ); \
     } \
     template <typename L, typename R> \
-    automation::expression_t<bool> operator op(automation::expression_t<L> const& lhs_expression, \
+    eightest::expression_t<bool> operator op(eightest::expression_t<L> const& lhs_expression, \
                                                R const& rhs_value) { \
-        return ::operator op(lhs_expression, automation::expression(rhs_value)); \
+        return ::operator op(lhs_expression, eightest::expression(rhs_value)); \
     } \
     template <typename L, typename R> \
-    automation::expression_t<bool> operator op(L const& lhs_value, \
-                                               automation::expression_t<R> const& rhs_expression) { \
-       return ::operator op(automation::expression(lhs_value), rhs_expression); \
+    eightest::expression_t<bool> operator op(L const& lhs_value, \
+                                               eightest::expression_t<R> const& rhs_expression) { \
+       return ::operator op(eightest::expression(lhs_value), rhs_expression); \
     }
 
-AUTOMATION_EXPRESSION_OPERATOR_GENERIC(==,"","")
-AUTOMATION_EXPRESSION_OPERATOR_GENERIC(!=,"","")
-AUTOMATION_EXPRESSION_OPERATOR_GENERIC(<,"","")
-AUTOMATION_EXPRESSION_OPERATOR_GENERIC(<=,"","")
-AUTOMATION_EXPRESSION_OPERATOR_GENERIC(>,"","")
-AUTOMATION_EXPRESSION_OPERATOR_GENERIC(>=,"","")
-AUTOMATION_EXPRESSION_OPERATOR_GENERIC(&&,"(",")")
-AUTOMATION_EXPRESSION_OPERATOR_GENERIC(||,"(",")")
+EIGHTEST_EXPRESSION_OPERATOR_GENERIC(==,"","")
+EIGHTEST_EXPRESSION_OPERATOR_GENERIC(!=,"","")
+EIGHTEST_EXPRESSION_OPERATOR_GENERIC(<,"","")
+EIGHTEST_EXPRESSION_OPERATOR_GENERIC(<=,"","")
+EIGHTEST_EXPRESSION_OPERATOR_GENERIC(>,"","")
+EIGHTEST_EXPRESSION_OPERATOR_GENERIC(>=,"","")
+EIGHTEST_EXPRESSION_OPERATOR_GENERIC(&&,"(",")")
+EIGHTEST_EXPRESSION_OPERATOR_GENERIC(||,"(",")")
 
-#undef AUTOMATION_EXPRESSION_OPERATOR_GENERIC
+#undef EIGHTEST_EXPRESSION_OPERATOR_GENERIC
 
-#endif // AUTOMATION_CORE_HPP
+#endif // EIGHTEST_CORE_HPP

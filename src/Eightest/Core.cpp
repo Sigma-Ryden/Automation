@@ -1,8 +1,8 @@
 #include <cstdio> // printf
 
-#include <Automation.hpp>
+#include <Eightest/Core.hpp>
 
-namespace automation
+namespace eightest
 {
 
 expression_t<std::nullptr_t> expression(std::nullptr_t expression_value)
@@ -118,4 +118,4 @@ void registry_t::default_stat_handler(std::string const& stat)
 
 registry_t global;
 
-} // namespace automation
+} // namespace eightest
