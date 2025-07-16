@@ -107,7 +107,7 @@ bool registry_t::stat()
 void registry_t::try_catch(std::function<void()> const& call) const noexcept
 {
     try { call(); }
-    catch(const char* e) { stat_handler(e); }
+    catch(char const* e) { stat_handler(e); }
     catch(std::exception& e) { stat_handler(e.what()); }
     catch(...) { stat_handler("Unexpected error."); }
 }
