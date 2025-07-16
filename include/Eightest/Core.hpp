@@ -130,7 +130,7 @@ public:
     void execute_all();
 
 public:
-    bool stat();
+    bool stat(); // return true in all passed
     static void default_stat_handler(std::string const& text);
 
 public:
