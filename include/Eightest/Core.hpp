@@ -57,7 +57,7 @@ struct expression_t
     T value;
     std::string string_value;
 
-    expression_t<bool> operator!();
+    expression_t<bool> operator!() const;
 };
 
 template <typename T>
@@ -66,7 +66,7 @@ struct expression_t<T&>
     T& value;
     std::string string_value;
 
-    expression_t<bool> operator!();
+    expression_t<bool> operator!() const;
 };
 
 template <typename T>
@@ -87,7 +87,7 @@ expression_t<std::nullptr_t> expression(std::nullptr_t expression_value);
 expression_t<bool> expression(bool expression_value);
 
 template <typename T>
-expression_t<bool> expression_t<T>::operator!()
+expression_t<bool> expression_t<T>::operator!() const
 {
     return expression(!static_cast<bool>(value), "!(" + string_value + ")");
 }
@@ -101,7 +101,7 @@ public:
     std::string const name;
 
 public:
-    test_t(const std::string& module, const std::string& name, registry_t* registry);
+    test_t(std::string const& module, std::string const& name, registry_t* registry);
 
 public:
     virtual void run() = 0;
@@ -121,12 +121,12 @@ public:
     void add(test_t* test);
 
 public:
-    bool check(bool condition, test_t* test, const std::string& msg);
-    bool check(expression_t<bool> const& expression, test_t* test, const std::string& msg);
+    bool check(bool condition, test_t* test, std::string const& msg);
+    bool check(expression_t<bool> const& expression, test_t* test, std::string const& msg);
 
 public:
-    void execute_module(const std::string& name); // execute test module with specify name
-    void execute_test(const std::string& name); // execute tests with specify name
+    void execute_module(std::string const& name); // execute test module with specify name
+    void execute_test(std::string const& name); // execute tests with specify name
     void execute_all();
 
 public:
@@ -134,7 +134,7 @@ public:
     static void default_stat_handler(std::string const& text);
 
 public:
-    void try_catch(std::function<void()>&& call) const noexcept;
+    void try_catch(std::function<void()> const& call) const noexcept;
 };
 
 extern registry_t global;

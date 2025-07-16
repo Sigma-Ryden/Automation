@@ -15,7 +15,7 @@ expression_t<bool> expression(bool expression_value)
     return expression_t<bool>{expression_value, expression_value == true ? "true" : "false"};
 }
 
-test_t::test_t(const std::string& module, const std::string& name, registry_t* registry)
+test_t::test_t(std::string const& module, std::string const& name, registry_t* registry)
     : module(module), name(name)
 {
     registry->add(this);
@@ -43,12 +43,12 @@ void registry_t::add(test_t* test)
     all[test->module][test->name] = test;
 }
 
-bool registry_t::check(bool condition, test_t* test, const std::string& msg)
+bool registry_t::check(bool condition, test_t* test, std::string const& msg)
 {
     return check(expression(condition), test, msg);
 }
 
-bool registry_t::check(expression_t<bool> const& expression, test_t* test, const std::string& msg)
+bool registry_t::check(expression_t<bool> const& expression, test_t* test, std::string const& msg)
 {
     auto const condition = static_cast<bool>(expression.value);
     update_stat(passed, failed, condition);
@@ -56,7 +56,7 @@ bool registry_t::check(expression_t<bool> const& expression, test_t* test, const
     return condition;
 }
 
-void registry_t::execute_module(const std::string& name)
+void registry_t::execute_module(std::string const& name)
 {
     auto it = all.find(name);
     if (it == all.end()) return;
@@ -65,7 +65,7 @@ void registry_t::execute_module(const std::string& name)
     for (auto& name_test : module) name_test.second->run();
 }
 
-void registry_t::execute_test(const std::string& name)
+void registry_t::execute_test(std::string const& name)
 {
     for (auto& name_module : all)
     {
@@ -104,7 +104,7 @@ bool registry_t::stat()
     return failed == 0;
 }
 
-void registry_t::try_catch(std::function<void()>&& call) const noexcept
+void registry_t::try_catch(std::function<void()> const& call) const noexcept
 {
     try { call(); }
     catch(const char* e) { stat_handler(e); }
