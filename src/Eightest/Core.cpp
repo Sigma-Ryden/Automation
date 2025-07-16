@@ -98,9 +98,10 @@ static std::string stat_format(unsigned passed, unsigned failed)
          + '\n';
 }
 
-void registry_t::stat()
+bool registry_t::stat()
 {
     stat_handler(stat_format(passed, failed));
+    return failed == 0;
 }
 
 void registry_t::try_catch(std::function<void()>&& call) const noexcept
