@@ -12,7 +12,7 @@
 
 // will redirect eightest registry
 #ifndef EIGHTEST_REGISTRY
-    #define EIGHTEST_REGISTRY (&eightest::global)
+    #define EIGHTEST_REGISTRY eightest::global()
 #endif
 
 // Allow to hide owner classes within different translation units
@@ -137,7 +137,7 @@ public:
     void try_catch(std::function<void()> const& call) const noexcept;
 };
 
-extern registry_t global;
+extern registry_t* global();
 
 } // namespace eightest
 

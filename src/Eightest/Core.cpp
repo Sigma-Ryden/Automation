@@ -117,6 +117,9 @@ void registry_t::default_stat_handler(std::string const& stat)
     printf("%s", stat.c_str());
 }
 
-registry_t global;
+registry_t* global()
+{
+    static registry_t self; return &self;
+}
 
 } // namespace eightest
