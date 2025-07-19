@@ -3,13 +3,13 @@
 
 #if defined(_WIN32)
 #   include <windows.h>
-#   define EIGHTEST_LOAD(name) LoadLibraryA(#name.dll)
+#   define EIGHTEST_LOAD(name) LoadLibraryA(#name".dll")
 #elif defined(__linux__)
 #   include <dlfcn.h>
-#   define EIGHTEST_LOAD(name) dlopen(#name.so, RTLD_NOW)
+#   define EIGHTEST_LOAD(name) dlopen(#name".so", RTLD_NOW)
 #elif defined(__APPLE__)
 #   include <dlfcn.h>
-#   define EIGHTEST_LOAD(name) dlopen(#name.dylib, RTLD_NOW)
+#   define EIGHTEST_LOAD(name) dlopen(#name".dylib", RTLD_NOW)
 #endif // if
 
 int main()
