@@ -32,7 +32,7 @@ add_library(Eightest ${PROJECT_LIBS_TYPE} ${PROJECT_SOURCES_FILES})
 target_include_directories(Eightest PUBLIC "${CMAKE_CURRENT_LIST_DIR}/include")
 
 if(EIGHTEST_BUILD_SHARED_LIBS)
-    set_target_properties(Eightest PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS $<BOOL:${WIN32}>)
+    set_target_properties(Eightest PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 endif()
 
 
@@ -45,6 +45,9 @@ if(EIGHTEST_CORE_RUN)
         target_link_libraries(EightestLauncher PUBLIC dl)
     endif()
 
-    set_target_properties(EightestLauncher PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE INSTALL_RPATH "${EIGHTEST_RPATH}" MACOSX_BUNDLE $<BOOL:${APPLE}>)
+    set_target_properties(EightestLauncher PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE INSTALL_RPATH "${EIGHTEST_RPATH}")
+    if(APPLE)
+        set_target_properties(EightestLauncher PROPERTIES MACOSX_BUNDLE TRUE)
+    endif()
     target_compile_definitions(EightestLauncher PUBLIC "EIGHTEST_CORE_RUN=${EIGHTEST_CORE_RUN}")
 endif()
