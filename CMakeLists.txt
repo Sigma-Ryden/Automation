@@ -32,7 +32,7 @@ add_library(Eightest ${PROJECT_LIBS_TYPE} ${PROJECT_SOURCES_FILES})
 target_include_directories(Eightest PUBLIC "${CMAKE_CURRENT_LIST_DIR}/include")
 
 if(EIGHTEST_BUILD_SHARED_LIBS)
-    set_target_properties(Eightest PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
+    set_target_properties(Eightest PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS $<BOOL:${WIN32}>)
 endif()
 
 
