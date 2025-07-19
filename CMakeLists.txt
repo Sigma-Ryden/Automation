@@ -37,7 +37,7 @@ endif()
 
 
 # [[Launcher]]
-if(EIGHTEST_CORE_RUN)
+if(EIGHTEST_RUN_MODULE)
     add_executable(EightestLauncher "${CMAKE_CURRENT_LIST_DIR}/test/Launcher.cpp")
 
     target_link_libraries(EightestLauncher PUBLIC Eightest)
@@ -46,5 +46,5 @@ if(EIGHTEST_CORE_RUN)
     endif()
 
     set_target_properties(EightestLauncher PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE INSTALL_RPATH "${EIGHTEST_RPATH}" MACOSX_BUNDLE $<BOOL:${APPLE}>)
-    target_compile_definitions(EightestLauncher PUBLIC "EIGHTEST_CORE_RUN=${EIGHTEST_CORE_RUN}")
+    target_compile_definitions(EightestLauncher PUBLIC "EIGHTEST_RUN_MODULE=\"${EIGHTEST_RUN_MODULE}\"")
 endif()
